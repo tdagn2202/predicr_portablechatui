@@ -1,5 +1,17 @@
-import React from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import Dialogue from "../ui/8bit/blocks/dialogue";
+import { getChatId } from "@/utils/getIds";
+import {
+  collection,
+  doc,
+  getDoc,
+  onSnapshot,
+  orderBy,
+  query,
+  setDoc,
+  Timestamp,
+} from "firebase/firestore";
+import { db } from "@/config/firebase";
 
 interface Contact {
   id: string;
@@ -12,15 +24,17 @@ interface Message {
   id: string;
   text: string;
   sender: "user" | "contact";
-  timestamp: Date;
+  created: Date;
 }
 
 interface messageType {
+  currentUser:string;
   currentMessages: Message[];
   activeContactData: Contact;
 }
 
-const Messages = ({ currentMessages, activeContactData }: messageType) => {
+const Messages = ({currentUser, currentMessages, activeContactData }: messageType) => {
+
   return (
     <>
       <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-amber-400">

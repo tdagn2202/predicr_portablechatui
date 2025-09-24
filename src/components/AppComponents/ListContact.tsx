@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/8bit/avatar";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "@/config/firebase";
 
 interface Contact {
   id: string;
@@ -9,16 +11,17 @@ interface Contact {
 }
 
 interface ListType {
-  setActiveContact: React.Dispatch<React.SetStateAction<string>>;
-  activeContact: string;
   contacts: Contact[];
+  activeContact: string;
+  setActiveContact: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const ListContact = ({
   contacts,
   setActiveContact,
   activeContact,
-}: ListType) => {
+}: ListType) => {  
+
   return (
     <>
       <div className="space-y-2">
